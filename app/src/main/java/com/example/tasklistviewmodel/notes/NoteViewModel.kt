@@ -17,7 +17,9 @@ class NoteViewModel : ViewModel() {
         // Simulate loading notes from a repository
         viewModelScope.launch {
             _notes.value = listOf(
-                Note("1", "Buy groceries"),
+                Note(
+                    "1", "Buy groceries"
+                ),
                 Note("2", "Attend meeting", isBookmarked = true),
                 Note("3", "Plan vacation")
             )
