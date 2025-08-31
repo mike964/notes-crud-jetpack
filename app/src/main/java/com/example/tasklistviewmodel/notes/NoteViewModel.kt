@@ -7,6 +7,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class NoteViewModel : ViewModel() {
 
@@ -18,10 +21,10 @@ class NoteViewModel : ViewModel() {
         viewModelScope.launch {
             _notes.value = listOf(
                 Note(
-                    "1", "Buy groceries"
+                    "1", "Buy groceries" , false , LocalDateTime.parse("2025-08-25T20:04:14.775695")
                 ),
                 Note("2", "Attend meeting", isBookmarked = true),
-                Note("3", "Plan vacation")
+                Note("3", "Plan vacation" , dateTime = LocalDateTime.parse("2025-08-26T16:04:14.774395"))
             )
         }
     }
