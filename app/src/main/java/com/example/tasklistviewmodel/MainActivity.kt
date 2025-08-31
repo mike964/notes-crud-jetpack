@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.tasklistviewmodel.notes.NoteScreen
 import com.example.tasklistviewmodel.ui.theme.TaskListViewModelTheme
 
 class MainActivity : ComponentActivity() {
@@ -26,7 +27,9 @@ class MainActivity : ComponentActivity() {
                         name = "Android",
                         modifier = Modifier.padding(innerPadding)
                     )
-                    CounterExample()
+//                    CounterExample()
+                    // 2nd Example
+                    NoteScreen()
 
                 }
             }
