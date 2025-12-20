@@ -53,7 +53,7 @@ dependencies {
     // View Model
 //    implementation( "androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.3") // Or newer
 //    implementation( "androidx.lifecycle:lifecycle-runtime-ktx:2.9.3") // Or newer
-    implementation( "androidx.lifecycle:lifecycle-viewmodel-compose:2.9.3") // Or newer
+    implementation( "androidx.lifecycle:lifecycle-viewmodel-compose:2.10.0") // Or newer
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
