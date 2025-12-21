@@ -13,9 +13,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.time.LocalDate
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 val sampleNotes = listOf(
     Note(
@@ -34,7 +32,7 @@ data class NotesUiState(
     val notesList: List<Note> = emptyList(),
     val newNoteText: String = "",
     val searchQuery: String = "",
-    val importantIsToggled: Boolean = false,
+    val importantIsToggled: Boolean = false,  // show only important notes
 )
 
 class NoteViewModel : ViewModel() {
@@ -48,18 +46,18 @@ class NoteViewModel : ViewModel() {
     private val _filteredNotes = MutableStateFlow(_uiState.value.notesList)
     val filteredNotes: StateFlow<List<Note>> = _filteredNotes
 
-    // The filter state itself, which the UI can toggle
-    var showImportant by mutableStateOf(false)
-        private set
 
     fun toggleFilter() {
         Log.d("xx", "toggleFilter()---")
 //        showImportant = !showImportant
 //        filterImportantNotes(_uiState.value.notesList, !showImportant)
         _uiState.value =
-            _uiState.value.copy(importantIsToggled = !_uiState.value.importantIsToggled)
-        _filteredNotes.value =
-            filterImportantNotes(_uiState.value.notesList , _uiState.value.importantIsToggled)
+            _uiState.value.copy(
+                importantIsToggled = !_uiState.value.importantIsToggled,
+
+            )
+       filterImportantNotes()
+
     }
 
     init {
@@ -82,17 +80,16 @@ class NoteViewModel : ViewModel() {
                 _filteredNotes.value = _uiState.value.notesList.filter { note ->
 //                    note.title.contains(query, ignoreCase = true) ||
                     note.content.contains(query, ignoreCase = true)
-
                 }
             }
             .launchIn(viewModelScope) // Use viewModelScope to keep the flow active
     }
 
-    private fun filterImportantNotes(notes: List<Note>, showImportant: Boolean): List<Note> {
-        return if (showImportant) {
-            notes.filter { note -> note.isImportant }
+    private fun filterImportantNotes( )  {
+        if (_uiState.value.importantIsToggled) {
+          _filteredNotes.value =   _uiState.value.notesList.filter { note -> note.isImportant }
         } else {
-            notes
+            _filteredNotes.value =  _uiState.value.notesList
         }
     }
 
@@ -112,6 +109,7 @@ class NoteViewModel : ViewModel() {
                     }
                 )
             }
+           filterImportantNotes()
         }
     }
 
