@@ -11,45 +11,66 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-class NoteViewModel : ViewModel() {
+val sampleNotes = listOf(
+    Note(
+        "1", "Buy groceries", false,
+        LocalDateTime.parse("2025-08-25T20:04:14.775695")
+    ),
+    Note("2", "Attend meeting", isBookmarked = true),
+    Note(
+        "3",
+        "Plan vacation",
+        dateTime = LocalDateTime.parse("2025-08-26T16:04:14.774395")
+    )
+)
 
-    private val _notes = MutableStateFlow<List<Note>>(emptyList())
-    val notes: StateFlow<List<Note>> = _notes.asStateFlow()
+data class NotesUiState(
+    val notesList: List<Note> = emptyList(),
+    val newNoteText: String = "",
+)
+
+class NoteViewModel : ViewModel() {
+    // Expose screen UI state as a StateFlow
+    private val _uiState = MutableStateFlow(NotesUiState())
+    val uiState: StateFlow<NotesUiState> = _uiState.asStateFlow()
+
 
     init {
         // Simulate loading notes from a repository
         viewModelScope.launch {
-            _notes.value = listOf(
-                Note(
-                    "1", "Buy groceries" , false , LocalDateTime.parse("2025-08-25T20:04:14.775695")
-                ),
-                Note("2", "Attend meeting", isBookmarked = true),
-                Note("3", "Plan vacation" , dateTime = LocalDateTime.parse("2025-08-26T16:04:14.774395"))
-            )
+            _uiState.update { currentState ->
+                currentState.copy(
+                    notesList = sampleNotes
+                )
+            }
         }
     }
 
     fun addNote(content: String) {
         viewModelScope.launch {
             val newNote = Note(System.currentTimeMillis().toString(), content)
-            _notes.update { currentNotes -> currentNotes + newNote }
+            _uiState.update { currentState -> currentState.copy(notesList = currentState.notesList + newNote) }
         }
     }
 
     fun toggleBookmark(noteId: String) {
         viewModelScope.launch {
-            _notes.update { currentNotes ->
-                currentNotes.map { note ->
-                    if (note.id == noteId) note.copy(isBookmarked = !note.isBookmarked) else note
-                }
+            _uiState.update { currentState ->
+                currentState.copy(
+                    currentState.notesList.map { note ->
+                        if (note.id == noteId) note.copy(isBookmarked = !note.isBookmarked) else note
+                    }
+                )
             }
         }
     }
 
     fun deleteNote(noteId: String) {
         viewModelScope.launch {
-            _notes.update { currentNotes ->
-                currentNotes.filter { note -> note.id != noteId }
+            _uiState.update { currentState ->
+                currentState.copy(
+                    notesList= currentState.notesList.filter { note -> note.id != noteId }
+                )
             }
         }
     }

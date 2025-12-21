@@ -26,7 +26,7 @@ fun NoteItem(note: Note, onToggleBookmark: () -> Unit, onDeleteNote: () -> Unit)
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp)
+            .padding(6.dp)
             .clickable { /* Handle note click, e.g., edit note */ }
     ) {
         Row(
@@ -42,6 +42,7 @@ fun NoteItem(note: Note, onToggleBookmark: () -> Unit, onDeleteNote: () -> Unit)
                 Text(text = note.content, fontWeight = FontWeight.Bold)
             }
             Column {
+            Row {
                 IconButton(onClick = onToggleBookmark) {
                     Icon(
                         if (note.isBookmarked) Icons.Filled.Star else Icons.Outlined.Star,
@@ -53,8 +54,7 @@ fun NoteItem(note: Note, onToggleBookmark: () -> Unit, onDeleteNote: () -> Unit)
                     Icon(Icons.Filled.Close, contentDescription = "Delete", tint = Color.Red)
                 }
             }
-
-
+            }
         }
     }
 }

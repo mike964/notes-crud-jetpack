@@ -14,7 +14,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
 fun NoteScreen(noteViewModel: NoteViewModel = viewModel()) {
-    val notes by noteViewModel.notes.collectAsState()
+    val uiState by noteViewModel.uiState.collectAsState()
     var newNoteContent by remember { mutableStateOf("") }
 
     Scaffold(
@@ -36,10 +36,10 @@ fun NoteScreen(noteViewModel: NoteViewModel = viewModel()) {
                 label = { Text("New Note") },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp)
+                    .padding(12.dp)
             )
             LazyColumn {
-                items(notes) { note ->
+                items(uiState.notesList) { note ->
                     NoteItem(
                         note = note,
                         onToggleBookmark = { noteViewModel.toggleBookmark(note.id) },
