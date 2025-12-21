@@ -45,9 +45,9 @@ fun NoteItem(note: Note, onToggleBookmark: () -> Unit, onDeleteNote: () -> Unit)
             Row {
                 IconButton(onClick = onToggleBookmark) {
                     Icon(
-                        if (note.isBookmarked) Icons.Filled.Star else Icons.Outlined.Star,
+                        if (note.isImportant) Icons.Filled.Star else Icons.Outlined.Star,
                         contentDescription = "Bookmark",
-                        tint = if (note.isBookmarked) Color.Magenta else Color.LightGray
+                        tint = if (note.isImportant) Color.Magenta else Color.LightGray
                     )
                 }
                 IconButton(onClick = onDeleteNote) {
